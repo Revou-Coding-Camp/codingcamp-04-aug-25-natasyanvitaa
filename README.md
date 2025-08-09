@@ -1,5 +1,5 @@
 Project Title: Todo List Web Application
-Description:
+
 This is a responsive and user-friendly web application designed to help users manage their daily tasks effectively. The app allows users to add, filter, and delete tasks, while also assigning a due date for better organization. The interface features a clean, dark-themed design for comfortable viewing and a minimal, modern look.
 
 Key Features:
