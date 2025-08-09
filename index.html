@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0f172a;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .todo-container {
+        background-color: #1e293b;
+        padding: 20px;
+        border-radius: 12px;
+        width: 500px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    /* Input row */
+    .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"], input[type="date"] {
+        flex: 1;
+        background-color: #0f172a;
+        border: 1px solid #334155;
+        color: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+
+    input::placeholder {
+        color: #94a3b8;
+    }
+
+    .btn-add {
+        background-color: #6366f1;
+        border: none;
+        padding: 0 14px;
+        border-radius: 6px;
+        font-size: 1.2rem;
+        color: white;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .btn-add:hover {
+        background-color: #4f46e5;
+    }
+
+    /* Filter & Delete all row */
+    .action-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+
+    .btn-filter, .btn-delete-all {
+        border: none;
+        background-color: #334155;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .btn-delete-all {
+        background-color: #818cf8;
+    }
+    .btn-filter:hover {
+        background-color: #475569;
+    }
+    .btn-delete-all:hover {
+        background-color: #6366f1;
+    }
+
+    /* Table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        font-size: 0.85rem;
+    }
+    th {
+        background-color: #0f172a;
+        color: #94a3b8;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #1e293b;
+    }
+    tr:nth-child(odd) {
+        background-color: #111827;
+    }
+    .btn-delete {
+        background-color: #ef4444;
+        border: none;
+        padding: 4px 8px;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.75rem;
+    }
+    .btn-delete:hover {
+        background-color: #dc2626;
+    }
+    .status {
+        color: #22c55e;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="todo-container">
+    <h2>Todo List</h2>
+
+    <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Add a todo...">
+        <input type="date" id="dateInput">
+        <button class="btn-add" onclick="addTask()">+</button>
+    </div>
+
+    <div class="action-row">
+        <button class="btn-filter">FILTER</button>
+        <button class="btn-delete-all" onclick="deleteAll()">DELETE ALL</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>TASK</th>
+                <th>DUE DATE</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody id="todoList">
+            <tr><td colspan="4" style="text-align:center; color:#94a3b8;">No task found</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let tasks = [];
+
+    function renderTasks() {
+        const list = document.getElementById("todoList");
+        list.innerHTML = "";
+
+        if (tasks.length === 0) {
+            list.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No task found</td></tr>`;
+            return;
+        }
+
+        tasks.forEach((task, index) => {
+            list.innerHTML += `
+                <tr>
+                    <td>${task.name}</td>
+                    <td>${task.date}</td>
+                    <td class="status">${task.status}</td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteTask(${index})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function addTask() {
+        const name = document.getElementById("taskInput").value.trim();
+        const date = document.getElementById("dateInput").value;
+
+        if (!name || !date) {
+            alert("Please enter task and date");
+            return;
+        }
+
+        tasks.push({ name, date, status: "Pending" });
+        document.getElementById("taskInput").value = "";
+        document.getElementById("dateInput").value = "";
+        renderTasks();
+    }
+
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+        renderTasks();
+    }
+
+    function deleteAll() {
+        tasks = [];
+        renderTasks();
+    }
+
+    renderTasks();
+</script>
+
+</body>
+</html>
